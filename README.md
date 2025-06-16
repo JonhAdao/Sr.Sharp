@@ -1,4 +1,4 @@
-# 💈 SrSharp — Sistema de Afiação Web
+# 💈 Sr.Sharp — Sistema de Afiação Web
 
 **SrSharp** é uma aplicação web desenvolvida com **Spring Boot** voltada para gestão de serviços de afiação. Ideal para oficinas, representantes e afiliados (lojas), ela oferece um fluxo moderno e organizado para atender a operação de ponta a ponta, desde o pedido até os relatórios financeiros.
 
