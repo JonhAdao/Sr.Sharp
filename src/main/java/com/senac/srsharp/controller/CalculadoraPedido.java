@@ -1,9 +1,10 @@
-package com.senac.srsharp.model;
+package com.senac.srsharp.controller;
 
 /**
  *
  * @author John
  */
+import com.senac.srsharp.model.Servico;
 import java.util.List;
 
 public class CalculadoraPedido {
