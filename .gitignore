@@ -1,18 +1,33 @@
-# 🔧 Arquivos e pastas geradas pelo NetBeans
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
+# =====================================
+# ⚙️ Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
 
-# 🚀 Arquivos gerados pelo Spring Boot / Maven
-target/
-*.jar
-mvnw
-mvnw.cmd
+# 🔧 Configuração do Eclipse
+.project
+.classpath
+.settings/
 
-# ⚠️ (Opcional) Ignorar arquivos de sistema ou editores de código
-*.log
-*.class
+# 🧠 Configuração do IntelliJ IDEA
+*.iml
 .idea/
-.vscode/
+out/
+
+# 🪟 Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# 🔒 Arquivos sensíveis
+src/main/resources/application.yml
+src/main/resources/application.properties
+.env
+
+# 🔍 Logs e temp
+*.log
+*.tmp
+*.bak
+
+# 🔧 Build wrapper
+/build/
+.gradle/
