@@ -30,10 +30,10 @@ public class ServicoPrestadoService {
         return null;
     }
 
-    public Servico atualizarServico(int id, String descricao, Double preço) {
+    public Servico atualizarServico(int id, String nome, Double preço) {
         Servico servicoAtualizado = buscarServico(id);
         if (servicoAtualizado != null) {
-            servicoAtualizado.setDescricao(descricao);
+            servicoAtualizado.setNome(nome);
             servicoAtualizado.setPreco(preço);
             System.out.println("\n Serviço Atualizado com Sucesso ");
         }

@@ -37,14 +37,17 @@ public class SrsharpApplication {
                     id++;
                     System.out.println("\n--- Cadastro de Serviço ---");
 
-                    System.out.print("Descrição: ");
-                    String descricao = scanner.nextLine();
+                    System.out.print("Nome: ");
+                    String nome = scanner.nextLine();
+
+                    System.out.print("Observacao: ");
+                    String observacao = scanner.nextLine();
 
                     System.out.print("Preço: ");
                     double preco = scanner.nextDouble();
                     scanner.nextLine(); // limpa o buffer
 
-                    Servico novoServico = new Servico(id, descricao, preco);
+                    Servico novoServico = new Servico(id, nome, observacao, preco);
 
                     servicosCrud.cadastrarServico(novoServico);
 
@@ -60,7 +63,8 @@ public class SrsharpApplication {
                     } else {
                         for (Servico s : lista) {
                             System.out.println("Id: " + s.getId());
-                            System.out.println("Descrição: " + s.getDescricao());
+                            System.out.println("Descrição: " + s.getNome());
+                            System.out.println("Descrição: " + s.getObservacao());
                             System.out.println("Preço: R$" + s.getPreco());
                             System.out.println("---------------------------");
                         }
@@ -80,9 +84,8 @@ public class SrsharpApplication {
                     System.out.print("Preço - ");
                     Double valorAtual = scanner.nextDouble();
 
-                    servicosCrud.atualizarServico(idServ , descricaoAtual, valorAtual);
+                    servicosCrud.atualizarServico(idServ, descricaoAtual, valorAtual);
 
-                    
                 }
 
                 case 4 -> {
@@ -103,7 +106,8 @@ public class SrsharpApplication {
                     scanner.close();
                 }
 
-                default -> System.out.println("\nOpção inválida. Tente novamente.\n");
+                default ->
+                    System.out.println("\nOpção inválida. Tente novamente.\n");
             }
 
         } while (opcao != 0);

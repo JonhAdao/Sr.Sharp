@@ -1,48 +1,25 @@
 package com.senac.srsharp.model;
 
-// import jakarta.persistence.*;
-// @Entity
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
 public class Servico {
 
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String descricao;
+    private String nome;
+    private String observacao;
     private Double preco;
 
-    public Servico() {
-    }
-
-    public Servico(int id, String descricao, Double preco) {
+    public Servico(int id, String nome, String observacao, Double preco) {
         this.id = id;
-        this.descricao = descricao;
+        this.nome = nome;
+        this.observacao = observacao;
         this.preco = preco;
     }
 
-
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
 
 }
