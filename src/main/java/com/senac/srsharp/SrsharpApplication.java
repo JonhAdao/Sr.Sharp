@@ -1,9 +1,11 @@
 package com.senac.srsharp;
 
 import com.senac.srsharp.model.Servico;
-import com.senac.srsharp.service.ServicoPrestadoService;
+import com.senac.srsharp.repository.ServicoRepository;
+import com.senac.srsharp.service.ServicoService;
 import java.util.List;
 import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,7 +18,9 @@ public class SrsharpApplication {
         System.out.println("Crud de serviços para teste");
 
         Scanner scanner = new Scanner(System.in);
-        ServicoPrestadoService servicosCrud = new ServicoPrestadoService();
+
+        ServicoService servicosCrud = new ServicoService();
+
         int id = 0;
 
         int opcao;
@@ -34,29 +38,29 @@ public class SrsharpApplication {
 
             switch (opcao) {
                 case 1 -> {
-                    id++;
                     System.out.println("\n--- Cadastro de Serviço ---");
 
+                    Servico novoServico = new Servico();
+
                     System.out.print("Nome: ");
-                    String nome = scanner.nextLine();
+                    novoServico.setNome(scanner.nextLine());
 
                     System.out.print("Observacao: ");
-                    String observacao = scanner.nextLine();
+                    novoServico.setObservacao(scanner.nextLine());
 
                     System.out.print("Preço: ");
-                    double preco = scanner.nextDouble();
+                    novoServico.setPreco(scanner.nextDouble());
+
                     scanner.nextLine(); // limpa o buffer
 
-                    Servico novoServico = new Servico(id, nome, observacao, preco);
-
-                    servicosCrud.cadastrarServico(novoServico);
+                    servicosCrud.salvar(novoServico);
 
                     System.out.println("\n Serviço cadastrado com sucesso!\n");
                 }
 
                 case 2 -> {
                     System.out.println("\n--- Lista de Serviços Cadastrados ---");
-                    List<Servico> lista = servicosCrud.listarServicos();
+                    List<Servico> lista = servicosCrud.listarTodos();
 
                     if (lista.isEmpty()) {
                         System.out.println("Nenhum serviço cadastrado ainda.");
@@ -75,16 +79,21 @@ public class SrsharpApplication {
                     System.out.println("\n--- Atualizar Serviço ---");
                     System.out.println("\nSelecione um serviço (id) ");
                     System.out.print("Serviço - ");
-                    int idServ = scanner.nextInt();
+                    Long idServ = scanner.nextLong();
                     scanner.nextLine();
 
+                    Servico novoServico = new Servico();
+
+                    System.out.print("Nome - ");
+                    novoServico.setNome(scanner.nextLine());
+
                     System.out.print("Descrição - ");
-                    String descricaoAtual = scanner.nextLine();
+                    novoServico.setObservacao(scanner.nextLine());
 
                     System.out.print("Preço - ");
-                    Double valorAtual = scanner.nextDouble();
+                    novoServico.setPreco(scanner.nextDouble());
 
-                    servicosCrud.atualizarServico(idServ, descricaoAtual, valorAtual);
+                    servicosCrud.atualizar(idServ, novoServico);
 
                 }
 
@@ -92,10 +101,10 @@ public class SrsharpApplication {
                     System.out.println("\n --- Excluir Serviço ---");
                     System.out.println("\n Selecione um serviço para excluir (id) ");
                     System.out.print(" Serviço - ");
-                    int idServico = scanner.nextInt();
+                    Long idServico = scanner.nextLong();
                     scanner.nextLine();
 
-                    servicosCrud.excluirServico(idServico - 1);
+                    servicosCrud.deletar(idServico - 1);
 
                     System.out.println("\n Serviço Excluido com Sucesso ");
                     System.out.println();

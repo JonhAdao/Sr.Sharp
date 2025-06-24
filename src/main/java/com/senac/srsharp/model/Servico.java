@@ -2,8 +2,10 @@ package com.senac.srsharp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class Servico {
 
@@ -13,13 +15,5 @@ public class Servico {
     private String nome;
     private String observacao;
     private Double preco;
-
-    public Servico(int id, String nome, String observacao, Double preco) {
-        this.id = id;
-        this.nome = nome;
-        this.observacao = observacao;
-        this.preco = preco;
-    }
-
 
 }
