@@ -1,5 +1,6 @@
 package com.senac.srsharp.model;
 
+import com.senac.srsharp.enums.StatusPagamento;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,7 +19,10 @@ public class Pagamento {
     private BigDecimal valorEmpresa;
     private BigDecimal valorAfiliado;
     private LocalDateTime dataPagamento;
-    private Boolean confirmado;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusPagamento statusPagamento;
 
     @ManyToOne
     private Pedido pedido;

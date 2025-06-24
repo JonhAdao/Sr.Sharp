@@ -1,5 +1,6 @@
 package com.senac.srsharp.model;
 
+import com.senac.srsharp.enums.PerfilUsuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,15 +17,15 @@ public abstract class Usuario {
     private String cpfOuCnpj;
     private String email;
     private String senha;
-    private String perfil; // CLIENTE ou AFILIADO
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PerfilUsuario perfil; // CLIENTE ou AFILIADO
 
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Contato contato;
-
-    public Usuario() {
-    }
 
 }
