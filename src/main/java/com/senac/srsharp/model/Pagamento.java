@@ -1,5 +1,6 @@
 package com.senac.srsharp.model;
 
+import com.senac.srsharp.enums.MeioPagamento;
 import com.senac.srsharp.enums.StatusPagamento;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -14,11 +15,11 @@ public class Pagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String formaPagamento;
     private BigDecimal valorTotal;
     private BigDecimal valorEmpresa;
     private BigDecimal valorAfiliado;
     private LocalDateTime dataPagamento;
+    private MeioPagamento formaPagamento;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

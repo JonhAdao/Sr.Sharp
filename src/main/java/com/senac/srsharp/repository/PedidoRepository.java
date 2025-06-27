@@ -16,7 +16,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findByAfiliadoId(Long afiliadoId);
 
-    List<Pedido> findByStatus(StatusPedido status);
+    List<Pedido> findByAfiliadoIdAndStatus(Long afiliadoId, StatusPedido status);
 
     List<Pedido> findBydataSolicitacaoBetween(LocalDate start, LocalDate end);
 }

@@ -15,6 +15,8 @@ public class Pedido {
     private Long id;
 
     private LocalDateTime dataSolicitacao;
+    
+    private String observacao;
 
     @ManyToOne
     private Afiliado afiliado;

@@ -1,6 +1,7 @@
 package com.senac.srsharp.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,6 @@ public class Servico {
     private int id;
     private String nome;
     private String observacao;
-    private Double preco;
+    private BigDecimal preco;
 
 }

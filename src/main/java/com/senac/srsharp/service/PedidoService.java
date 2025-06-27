@@ -1,7 +1,9 @@
 package com.senac.srsharp.service;
 
+import com.senac.srsharp.enums.MeioPagamento;
 import com.senac.srsharp.enums.StatusPedido;
 import com.senac.srsharp.model.Afiliado;
+import com.senac.srsharp.model.Pagamento;
 import com.senac.srsharp.model.Pedido;
 import com.senac.srsharp.model.Servico;
 import com.senac.srsharp.repository.AfiliadoRepository;
@@ -30,27 +32,49 @@ public class PedidoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
-    @Transactional
-    public Pedido criarPedido(Long afiliadoId, List<Long> servicoIds) {
-        // 1. Buscar afiliado
-        Afiliado afiliado = afiliadoRepository.findById(afiliadoId)
+    @Autowired
+    PagamentoService pagamentoService;
+
+    private Afiliado buscarAfiliadoOuErro(Long afiliadoId) {
+        return afiliadoRepository.findById(afiliadoId)
                 .orElseThrow(() -> new EntityNotFoundException("Afiliado não encontrado"));
+    }
 
-        // 2. Buscar serviços
-        List<Servico> servicos = servicoRepository.findAllById(servicoIds);
-        if (servicos.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum serviço válido informado.");
+    private List<Servico> buscarServicosOuErro(List<Long> ids) {
+        List<Servico> servicos = servicoRepository.findAllById(ids);
+        if (servicos.isEmpty() || servicos.size() != ids.size()) {
+            throw new IllegalArgumentException("Um ou mais serviços não foram encontrados.");
         }
+        return servicos;
+    }
 
-        // 3. Criar pedido
+    private Pedido montarPedido(Afiliado afiliado, List<Servico> servicos, String observacao) {
         Pedido pedido = new Pedido();
         pedido.setAfiliado(afiliado);
-        pedido.setServicos(servicos); // Supondo relacionamento List<Servico>
+        pedido.setServicos(servicos);
+        pedido.setObservacao(observacao);
         pedido.setDataSolicitacao(LocalDateTime.now());
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
+        return pedido;
+    }
 
-        // 4. Salvar e retornar
+    @Transactional
+    public Pedido criarPedido(Long afiliadoId, List<Long> servicoIds, String observacao, MeioPagamento meioPagamento) {
+        Afiliado afiliado = buscarAfiliadoOuErro(afiliadoId);
+        List<Servico> servicos = buscarServicosOuErro(servicoIds);
+
+        Pedido pedido = montarPedido(afiliado, servicos, observacao);
+        Pagamento pagamento = pagamentoService.gerarPagamentoTotal(pedido, servicos, meioPagamento);
+
+        pedido.setPagamentos(List.of(pagamento));
         return pedidoRepository.save(pedido);
+    }
+
+    public List<Pedido> buscarPedidosPorStatus(Long afiliadoId, StatusPedido status) {
+        if (!afiliadoRepository.existsById(afiliadoId)) {
+            throw new EntityNotFoundException("Afiliado não encontrado");
+        }
+        return pedidoRepository.findByAfiliadoIdAndStatus(afiliadoId, status);
     }
 
 }

@@ -1,27 +1,25 @@
 package com.senac.srsharp;
 
 import com.senac.srsharp.model.Servico;
-import com.senac.srsharp.repository.ServicoRepository;
 import com.senac.srsharp.service.ServicoService;
 import java.util.List;
 import java.util.Scanner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class SrsharpApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SrsharpApplication.class, args);
+        ApplicationContext context = SpringApplication.run(SrsharpApplication.class, args);
         System.out.println("\n\n");
         System.out.println("Crud de serviços para teste");
 
         Scanner scanner = new Scanner(System.in);
 
-        ServicoService servicosCrud = new ServicoService();
-
-        int id = 0;
+        // Pega o service direto do contexto Spring
+        ServicoService servicoService = context.getBean(ServicoService.class);
 
         int opcao;
 
@@ -49,18 +47,18 @@ public class SrsharpApplication {
                     novoServico.setObservacao(scanner.nextLine());
 
                     System.out.print("Preço: ");
-                    novoServico.setPreco(scanner.nextDouble());
+                    novoServico.setPreco(scanner.nextBigDecimal());
 
                     scanner.nextLine(); // limpa o buffer
 
-                    servicosCrud.salvar(novoServico);
+                    servicoService.salvar(novoServico);
 
                     System.out.println("\n Serviço cadastrado com sucesso!\n");
                 }
 
                 case 2 -> {
                     System.out.println("\n--- Lista de Serviços Cadastrados ---");
-                    List<Servico> lista = servicosCrud.listarTodos();
+                    List<Servico> lista = servicoService.listarTodos();
 
                     if (lista.isEmpty()) {
                         System.out.println("Nenhum serviço cadastrado ainda.");
@@ -91,9 +89,11 @@ public class SrsharpApplication {
                     novoServico.setObservacao(scanner.nextLine());
 
                     System.out.print("Preço - ");
-                    novoServico.setPreco(scanner.nextDouble());
+                    novoServico.setPreco(scanner.nextBigDecimal());
 
-                    servicosCrud.atualizar(idServ, novoServico);
+                    servicoService.atualizar(idServ, novoServico);
+                    
+                    System.out.println("\n Serviço atualizado com sucesso!\n");
 
                 }
 
@@ -104,7 +104,7 @@ public class SrsharpApplication {
                     Long idServico = scanner.nextLong();
                     scanner.nextLine();
 
-                    servicosCrud.deletar(idServico - 1);
+                    servicoService.deletar(idServico);
 
                     System.out.println("\n Serviço Excluido com Sucesso ");
                     System.out.println();
