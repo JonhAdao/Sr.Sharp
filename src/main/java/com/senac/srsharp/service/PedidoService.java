@@ -9,11 +9,14 @@ import com.senac.srsharp.model.Servico;
 import com.senac.srsharp.repository.AfiliadoRepository;
 import com.senac.srsharp.repository.PedidoRepository;
 import com.senac.srsharp.repository.ServicoRepository;
+import com.senac.srsharp.util.PedidoEspecificacao;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -70,11 +73,13 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    public List<Pedido> buscarPedidosPorStatus(Long afiliadoId, StatusPedido status) {
-        if (!afiliadoRepository.existsById(afiliadoId)) {
-            throw new EntityNotFoundException("Afiliado não encontrado");
-        }
-        return pedidoRepository.findByAfiliadoIdAndStatus(afiliadoId, status);
+    public List<Pedido> buscarPedidosComFiltro(Long afiliadoId, StatusPedido status,
+            LocalDate inicio, LocalDate fim) {
+        Specification<Pedido> spec = PedidoEspecificacao.porAfiliado(afiliadoId)
+                .and(PedidoEspecificacao.porStatus(status))
+                .and(PedidoEspecificacao.entreDatas(inicio, fim));
+
+        return pedidoRepository.findAll(spec);
     }
 
 }
