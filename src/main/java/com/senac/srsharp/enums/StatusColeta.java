@@ -7,5 +7,6 @@ package com.senac.srsharp.enums;
 public enum StatusColeta {
     PENDENTE,
     COLETADO,
-    ENTREGUE
+    ENTREGUE,
+    CANCELADA;
 }

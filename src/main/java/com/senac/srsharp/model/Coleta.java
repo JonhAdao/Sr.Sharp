@@ -2,7 +2,6 @@ package com.senac.srsharp.model;
 
 import com.senac.srsharp.enums.StatusColeta;
 import jakarta.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Data;
 

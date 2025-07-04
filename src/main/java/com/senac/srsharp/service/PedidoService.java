@@ -41,13 +41,13 @@ public class PedidoService {
     @Autowired
     ColetaService coletaService;
 
-    // Método que verifica se o Afiliado que realizou o pedido existe
+    // Método privado que verifica se o Afiliado que realizou o pedido existe
     private Afiliado buscarAfiliadoOuErro(Long afiliadoId) {
         return afiliadoRepository.findById(afiliadoId)
                 .orElseThrow(() -> new EntityNotFoundException("Afiliado não encontrado"));
     }
 
-    // Método que verifica se os serviços escolhidos existem
+    // Método privado que verifica se os serviços escolhidos existem
     private List<Servico> buscarServicosOuErro(List<Long> ids) {
         List<Servico> servicos = servicoRepository.findAllById(ids);
         if (servicos.isEmpty() || servicos.size() != ids.size()) {
@@ -56,7 +56,7 @@ public class PedidoService {
         return servicos;
     }
 
-    //Método que cria o pedido parcialmente, faltando o campo de pagamento
+    //Método privado que cria o pedido parcialmente, faltando o campo de pagamento
     private Pedido montarPedido(Afiliado afiliado, List<Servico> servicos, String observacao) {
         Pedido pedido = new Pedido();
         pedido.setAfiliado(afiliado);
@@ -82,13 +82,18 @@ public class PedidoService {
 
     }
 
-    public List<Pedido> buscarPedidosComFiltro(Long afiliadoId, StatusPedido status,
-            LocalDate inicio, LocalDate fim) {
+    public List<Pedido> buscarPedidosComFiltro(Long afiliadoId, StatusPedido status, LocalDate inicio, LocalDate fim) {
         Specification<Pedido> spec = PedidoEspecificacao.porAfiliado(afiliadoId)
                 .and(PedidoEspecificacao.porStatus(status))
                 .and(PedidoEspecificacao.entreDatas(inicio, fim));
 
         return pedidoRepository.findAll(spec);
+    }
+
+    public List<Pedido> listarPedidosPorAfiliado(Long afiliadoId) {
+        Afiliado afiliadoEncontrado = buscarAfiliadoOuErro(afiliadoId);
+        return pedidoRepository.findByAfiliadoId(afiliadoEncontrado.getId());
+
     }
 
 }
