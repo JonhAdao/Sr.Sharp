@@ -3,6 +3,7 @@ package com.senac.srsharp.model;
 import com.senac.srsharp.enums.StatusColeta;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -13,7 +14,7 @@ public class Coleta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dataAgendada;
+    private LocalDateTime dataAgendada;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

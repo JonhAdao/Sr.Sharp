@@ -38,11 +38,16 @@ public class PedidoService {
     @Autowired
     PagamentoService pagamentoService;
 
+    @Autowired
+    ColetaService coletaService;
+
+    // Método que verifica se o Afiliado que realizou o pedido existe
     private Afiliado buscarAfiliadoOuErro(Long afiliadoId) {
         return afiliadoRepository.findById(afiliadoId)
                 .orElseThrow(() -> new EntityNotFoundException("Afiliado não encontrado"));
     }
 
+    // Método que verifica se os serviços escolhidos existem
     private List<Servico> buscarServicosOuErro(List<Long> ids) {
         List<Servico> servicos = servicoRepository.findAllById(ids);
         if (servicos.isEmpty() || servicos.size() != ids.size()) {
@@ -51,6 +56,7 @@ public class PedidoService {
         return servicos;
     }
 
+    //Método que cria o pedido parcialmente, faltando o campo de pagamento
     private Pedido montarPedido(Afiliado afiliado, List<Servico> servicos, String observacao) {
         Pedido pedido = new Pedido();
         pedido.setAfiliado(afiliado);
@@ -61,6 +67,7 @@ public class PedidoService {
         return pedido;
     }
 
+    // Método que cria o pedido completo, incluindo Pagamento.
     @Transactional
     public Pedido criarPedido(Long afiliadoId, List<Long> servicoIds, String observacao, MeioPagamento meioPagamento) {
         Afiliado afiliado = buscarAfiliadoOuErro(afiliadoId);
@@ -70,7 +77,9 @@ public class PedidoService {
         Pagamento pagamento = pagamentoService.gerarPagamentoTotal(pedido, servicos, meioPagamento);
 
         pedido.setPagamentos(List.of(pagamento));
+        coletaService.agendarColeta(pedido);
         return pedidoRepository.save(pedido);
+
     }
 
     public List<Pedido> buscarPedidosComFiltro(Long afiliadoId, StatusPedido status,
