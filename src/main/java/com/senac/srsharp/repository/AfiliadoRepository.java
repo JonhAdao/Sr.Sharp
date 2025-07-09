@@ -19,4 +19,7 @@ public interface AfiliadoRepository extends JpaRepository<Afiliado, Long> {
     List<Afiliado> findBySaldoDisponivelGreaterThan(BigDecimal value);
 
     List<Afiliado> findByNomeContainingIgnoreCase(String name);
+    
+    boolean existsByNome(String name);
+    
 }

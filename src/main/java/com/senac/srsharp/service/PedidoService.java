@@ -96,4 +96,12 @@ public class PedidoService {
 
     }
 
+    public Pedido atualizarStatus(Long pedidoId, StatusPedido novoStatus) {
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        pedido.setStatus(novoStatus);
+        return pedidoRepository.save(pedido);
+    }
+
 }
